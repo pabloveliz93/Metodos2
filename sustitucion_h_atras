@@ -1,0 +1,17 @@
+function r = sustitucion_h_atras(A, b)
+    %Resuelve el sistema Ax = b, siempre que la matriz A sea triangular
+    %superior. b debe ser un vector columna.
+    n = size(b, 1);
+    for j = n: -1: 1
+        b(j) = b(j) / A(j, j);
+        A(j,j) = 1;
+        for i = j - 1: -1: 1
+            if A(i,j) ~= 0
+                m = A(i,j);
+                b(i) = b(i) - m * b(j);
+                A(i,j) = 0;
+            end
+        end
+    end
+    r = b;
+end
