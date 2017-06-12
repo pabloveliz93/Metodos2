@@ -1,0 +1,27 @@
+function [X i t con] = jacobi(A, b, X0, e)
+    tic
+    i = 1;
+    n = size(A, 1);
+    I = eye(n);
+    Q = obtener_diagonal(A);
+    Qinv = zeros(n);
+    for i = 1: n
+        Qinv(i, i) = 1/ Q(i, i);
+    end
+    %Verificación de restricción
+    if det(A) == 0 || det(Q) == 0
+        fprintf('No se puede aproximar la solución de este sistema. (el determinante de Q o A es cero)\n')
+        return
+    end
+    con = radio_esp(I - Qinv*A);
+    if con >= 1
+        fprintf('Este método no converge para este set de datos.\n')
+        return
+    end
+    X = X0;
+    while norm(A * X - b, 1) > e 
+        i = i + 1;
+        X = (I - Qinv * A)* X + Qinv * b;
+    end
+    t = toc
+end
