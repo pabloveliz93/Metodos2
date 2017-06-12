@@ -1,0 +1,26 @@
+function [L U] = obtener_LU(A)
+    n = size(A);
+    n = n(2);
+    
+    %Verificación de restricción
+    for j = 1: n
+        tmp = A(1:j, 1:j);
+        if det(tmp) == 0
+            fprintf('No se puede obtener LU. (Uno de los determinantes de los menores es 0)\n')
+            return
+        end
+    end
+    
+    L = eye(n);
+    U = repmat(A, 1);
+    for k = 1: n - 1
+        for i = k + 1: n
+            m = U(i, k) / U(k, k);
+            L(i,k) = m;
+            U(i,k) = 0;
+            for j = k + 1: n
+                U(i,j) = U(i,j) - m * U(k, j);
+            end
+        end
+    end
+end
