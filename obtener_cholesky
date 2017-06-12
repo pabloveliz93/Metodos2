@@ -1,0 +1,42 @@
+function [L Lt] = obtener_cholesky(A)
+    n = size(A);
+    n = n(2);
+    %Verificación de restricción
+    if ~issymmetric(A)
+        fprintf('No se puede obtener cholesky. (La matriz no es simétrica)\n')
+        return
+    else
+        for j = 1: n
+            tmp = A(1:j, 1:j);
+            if det(tmp) <= 0
+                fprintf('No se puede obtener cholesky. (Uno de los determinantes de los menores es 0 o negativo)\n')
+                return
+            end
+        end
+    end
+    L = zeros(n);
+    %Cálculo de la primera columna, necesaria para calcular el resto.
+    L(1,1) = sqrt(A(1,1));
+    for i = 1: n
+        L(i,1) = A(1,i) / L(1,1);
+    end
+    %Cálculo de las columnas restantes
+    for j = 2: n
+        for i = j: n
+            if i == j
+                suma_tmp = 0;
+                for k = 1: i - 1
+                    suma_tmp = suma_tmp + L(i,k)^2;
+                end
+                L(i,i) = sqrt(A(i,i) - suma_tmp);
+            else
+                suma_tmp = 0;
+                for k = 1: j - 1
+                    suma_tmp = suma_tmp + L(j,k)*L(i,k);
+                end
+                L(i,j) = (A(j,i) - suma_tmp) / (L(j,j));
+            end
+        end
+    end
+    Lt = transpose(L);
+end
