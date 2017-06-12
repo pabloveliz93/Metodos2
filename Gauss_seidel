@@ -1,0 +1,22 @@
+function [x i t] = gauss_seidel(A, b, x0, e)
+    tic
+    i = 1;
+    n = size(A, 1);
+    Q = tri_inf(A);
+    %Verificación de restricción
+    if det(A) == 0 || det(Q) == 0
+        fprintf('No se puede aproximar la solución de este sistema. (el determinante de Q o A es cero)\n')
+        return
+    end
+    if radio_esp(eye(n) - inv(Q)*A) >= 1
+        fprintf('Este método no converge para este set de datos.\n')
+        return
+    end
+    x = x0;
+    while norm(A * x - b, 1) > e 
+        i = i + 1;
+        S = (Q - A)*x + b;
+        x = sustitucion_h_adelante(Q, S)
+    end
+    t = toc
+end
