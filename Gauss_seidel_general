@@ -1,0 +1,17 @@
+function [X i] = gauss_seidel_general(A, b, X0, e)
+    n = size(b)
+    n = n(2)
+    I = eye(n)
+    Q = tri_inf(A)
+    %Verificación de restricción
+    if det(A) == 0 || det(Q) == 0
+        fprintf('No se puede aproximar la solución de este sistema. (el determinante de Q o A es cero)\n')
+        return
+    end
+    Qinv = inv(Q)
+    if radio_esp(I - Qinv*A) >= 1
+        fprintf('Este método no converge para este set de datos.\n')
+        return
+    end
+    esquema_iterativo()
+end
