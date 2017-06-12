@@ -1,0 +1,26 @@
+function [X i t] = relajacion(A, b, w, x0, e)
+    tic
+    i = 1;
+    Q = tri_inf(A);
+    n = size(A, 1);
+    I = eye(n);
+    for i = 1: n
+        Q(i, i) = Q(i, i) / w;
+    end
+    %Verificación de restricción
+    if det(A) == 0 || det(Q) == 0 || w <= 0 || w >= 2
+        fprintf('No se puede aproximar la solución de este sistema. (el determinante de Q o A es cero, o el valor de w no es correcto)\n')
+        return
+    end
+    if radio_esp(I - inv(Q)*A) >= 1
+        fprintf('Este método no converge para este set de datos.\n')
+        return
+    end
+    X = x0;
+    while norm(A * X - b, 1) > e
+        i = i + 1;
+        S = (Q - A)*X + b;
+        X = sustitucion_h_adelante(Q, S);
+    end
+    t = toc
+end
