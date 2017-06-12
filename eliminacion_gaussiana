@@ -1,0 +1,24 @@
+function [rA rb] = eliminacion_gaussiana(A, b)
+    n = size(b, 1);
+    
+    %Verificación de restricción
+    tmp = diag(A);
+    for h = 1: n
+        if tmp(h) == 0
+            fprintf('No se puede realizar eliminación gaussiana a esta matriz. (Uno de los elementos de la diagonal es 0)\n')
+            return
+        end
+    end
+    for k = 1: 1: n - 1
+        for i = k + 1: n
+            m = A(i, k) / A(k, k);
+            A(i,k) = 0;
+            for j = k + 1: n
+                A(i,j) = A(i,j) - m * A(k, j);
+            end
+            b(i) = b(i) - m * b(k);
+        end
+    end
+    rA = A;
+    rb = b;
+end
