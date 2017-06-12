@@ -1,0 +1,14 @@
+function A = construir_matriz_p2(n)
+    A = zeros(n);
+    for i = 1: n
+        if i <= n - 3
+            A(i + 3, i) = 1;
+            A(i, i + 3) = 1;
+        end
+        if i ~= n
+            A(i, i + 1) = 1;
+            A(i + 1, i) = 1;
+        end
+        A(i,i) = -4;
+    end
+end
