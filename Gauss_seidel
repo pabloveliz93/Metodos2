@@ -1,4 +1,4 @@
-function [x i t] = gauss_seidel(A, b, x0, e)
+function [x i t r] = gauss_seidel(A, b, x0, e)
     tic
     i = 1;
     n = size(A, 1);
@@ -8,7 +8,8 @@ function [x i t] = gauss_seidel(A, b, x0, e)
         fprintf('No se puede aproximar la solución de este sistema. (el determinante de Q o A es cero)\n')
         return
     end
-    if radio_esp(eye(n) - inv(Q)*A) >= 1
+    r=radio_esp(eye(n) - inv(Q)*A)
+    if r >= 1
         fprintf('Este método no converge para este set de datos.\n')
         return
     end
