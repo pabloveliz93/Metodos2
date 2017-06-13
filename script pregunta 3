@@ -1,0 +1,13 @@
+points = puntos(50);
+matriz = zeros(50,50);
+for i=1:50
+    matriz(i,1)=1;
+end
+for j=2:50
+    for h=1:50
+        matriz(h,j)=points(h)^(j-1);
+    end
+end
+matriz;
+
+x = eliminacion_gaussiana(matriz, funcion(points,50))
