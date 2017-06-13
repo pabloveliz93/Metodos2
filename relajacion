@@ -1,4 +1,4 @@
-function [X i t] = relajacion(A, b, w, x0, e)
+function [X i t r] = relajacion(A, b, w, x0, e)
     tic
     i = 1;
     Q = tri_inf(A);
@@ -12,7 +12,8 @@ function [X i t] = relajacion(A, b, w, x0, e)
         fprintf('No se puede aproximar la solución de este sistema. (el determinante de Q o A es cero, o el valor de w no es correcto)\n')
         return
     end
-    if radio_esp(I - inv(Q)*A) >= 1
+    r=radio_esp(I - inv(Q)*A)
+    if r >= 1
         fprintf('Este método no converge para este set de datos.\n')
         return
     end
